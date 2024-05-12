@@ -10,6 +10,9 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { colors } from "../styles/styles";
 import ProductDetails from "../screens/ProductDetails";
 import Cart from "../screens/Cart";
+import Address from "../screens/Address";
+import Payment from "../screens/Payment";
+import Success from "../screens/Success";
 const Navigator = () =>{
    const Stack = createNativeStackNavigator()
    const Tab = createBottomTabNavigator();
@@ -54,6 +57,9 @@ const Navigator = () =>{
             <Stack.Screen name='Register' component={Register} />
             <Stack.Screen name='ProductDetails' component={ProductDetails} />
             <Stack.Screen name='Cart' component={Cart} />
+            <Stack.Screen name='Address' component={Address} />
+            <Stack.Screen name='Payment' component={Payment} />
+            <Stack.Screen name='Success' component={Success} />
         </Stack.Navigator>
     )
    }
