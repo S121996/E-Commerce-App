@@ -1,14 +1,21 @@
 import { KeyboardAvoidingView, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {defaultStyle, title, inputStyling, pressableStyles} from '../styles/styles'
 import { showMessage } from 'react-native-flash-message';
 import axios from 'axios'
 import { TextInput } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axiosInstance from '../axiosConfig/axiosInstance';
+import useCheckUser from '../utils/useCheckUser';
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const isUser = useCheckUser();
+  useEffect(()=>{
+    if(isUser){
+      navigation.navigate('Main')
+    }
+  },[isUser,navigation])
   const loginSubmit = async() =>{
     try {
      const user = {email, password}

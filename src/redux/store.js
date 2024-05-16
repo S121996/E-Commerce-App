@@ -6,8 +6,6 @@ const store = configureStore({
     reducer:{
         cart:CartReducer
     }
-
-    
 });
 
 

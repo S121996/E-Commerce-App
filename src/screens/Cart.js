@@ -1,14 +1,22 @@
 import { Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { AirbnbRating } from 'react-native-ratings'
+import { clearCart, removeItem } from '../redux/reducer/CartReducer'
+import { useNavigation } from '@react-navigation/native'
 
 const Cart = () => {
     const {cart} = useSelector((state)=>state.cart)
+    const dispatch = useDispatch();
+    const navigation = useNavigation();
+    const total = cart.reduce((totalPrice,item)=>
+      totalPrice + item.price * item.quantity,
+      0
+    )
     return (
     <View style={styles.container}>
       <Text style={styles.title}>Cart Items:</Text>
-      <Text style={{fontSize:18,fontWeight:'500'}}>Cart Total: 4233</Text>
+      <Text style={{fontSize:18,fontWeight:'500'}}>Cart Total: {total}</Text>
       <Pressable style={{
         padding:10,
         borderRadius:5,
@@ -17,7 +25,9 @@ const Cart = () => {
         alignItems:'center',
         marginVertical:10,
       }}>
-        <Text style={{fontSize:16}}>Proceed to Buy</Text>
+        <Text style={{fontSize:16}}
+        onPress={()=>navigation.navigate('Address')}
+        >Proceed to Buy</Text>
       </Pressable>
       <ScrollView showsVerticalScrollIndicator={false}>
       {cart.map((item)=>(
@@ -34,10 +44,11 @@ const Cart = () => {
           <View>
             <View style={{flexDirection:'row',justifyContent:'space-around'}}>
              <TouchableOpacity><Text style={styles.quantityButton}>-</Text></TouchableOpacity>
-               <Text style={styles.quantity}>4</Text>
+               <Text style={styles.quantity}>{item.quantity}</Text>
                <TouchableOpacity><Text style={styles.quantityButton}>+</Text></TouchableOpacity>
-               {/* <TouchableOpacity><Text style={{fontSize:18,fontWeight:'bold',color:'red'}}>X</Text></TouchableOpacity> */}
-
+               <TouchableOpacity
+               onPress={()=>dispatch(removeItem(item))}
+               ><Text style={{fontSize:18,fontWeight:'bold',color:'red'}}>X</Text></TouchableOpacity>
             </View>
           </View> 
           </View>
@@ -60,6 +71,17 @@ const Cart = () => {
            </View> 
         </View>    
       ))}
+      
+      {cart.length > 0 && (
+      <View style={{flexDirection:'row',justifyContent:'space-between'}}>
+        <View></View>
+      <Pressable
+      onPress={()=>dispatch(clearCart())}
+      style={{borderWidth:1,borderColor:'skyblue',padding:4}}>
+        <Text style={{fontSize:16,fontWeight:'500'}}>Clear cart</Text>
+      </Pressable>
+      </View>
+      )}
       </ScrollView>
     </View>
   )
