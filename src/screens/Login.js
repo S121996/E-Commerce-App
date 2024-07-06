@@ -1,5 +1,5 @@
 import { KeyboardAvoidingView, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import {defaultStyle, title, inputStyling, pressableStyles} from '../styles/styles'
 import { showMessage } from 'react-native-flash-message';
 import axios from 'axios'
@@ -11,11 +11,17 @@ const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const isUser = useCheckUser();
+  const emailRef = useRef(null);
+  // useEffect(()=>{
+  //   if(isUser){
+  //     navigation.navigate('Main')
+  //   }
+  // },[isUser,navigation])
   useEffect(()=>{
-    if(isUser){
-      navigation.navigate('Main')
-    }
-  },[isUser,navigation])
+  //  console.log('21')
+   console.log(emailRef);
+   emailRef.current.focus();
+  },[])
   const loginSubmit = async() =>{
     try {
      const user = {email, password}
@@ -44,6 +50,7 @@ const Login = ({navigation}) => {
        <Text style={title}>Login</Text>
        <KeyboardAvoidingView>
         <TextInput
+          ref={emailRef}
           placeholder='Enter Email'
           value={email}
           onChangeText={(text)=>setEmail(text)}
